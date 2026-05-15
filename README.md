@@ -27,55 +27,43 @@
 ### Backend
 
 - Golang 1.22+
-- Gin（HTTP framework）
-- GORM（ORM）
-- PostgreSQL 16+
-- Redis
-- JWT
-- RESTful API、WebSocket
+- Gin、GORM
+- PostgreSQL、Redis
+- JWT、RESTful、WebSocket
 
-### Frontend（新 repo 主力，參考 `react-paraninja` / `react-eltryn`）
+### Frontend
 
-- React 18 / 19 + Vite + TypeScript（strict mode）
-- React Router v6 / v7
-- **Redux Toolkit + RTK Query**（state + API）
-- **Tailwind CSS + shadcn/ui (Radix UI)**（樣式 + 元件）
-- **React Hook Form + Zod**（表單 + 驗證）
-- Vitest + React Testing Library + MSW（測試）
-- openapi-typescript（從 OpenAPI 產 TS 型別）
-
-> Ant Design 是舊 repo 的選項，**新功能不再使用 AntD**。
+- React 18 / 19 + Vite + TypeScript（strict）
+- React Router
+- Redux Toolkit + RTK Query
+- Tailwind CSS + shadcn/ui (Radix UI)
+- React Hook Form + Zod
+- Vitest + React Testing Library + MSW
 
 ### Infra / Tooling
 
 - Docker、Docker Compose
 - Linux command line
-- Git / GitHub
-- CI / CD（GitHub Actions）
-- Nginx
+- Git / GitHub、CI / CD
 - AI agent：Claude Code / Cursor / Copilot
 
 ---
 
-## Repo 結構
+## 文件結構
 
 ```
-stranity-hire-roadmap/
-├── README.md
-├── CONTRIBUTING.md
-├── CLAUDE.md
-└── docs/
-    ├── 01_backend_learning.md         Go 學習路徑
-    ├── 02_frontend_learning.md        React + 新 stack 學習路徑
-    ├── 03_git_and_engineering.md      Git、PR、Linux、Docker 基礎
-    ├── 04_pre_onboarding_project.md   入職前 fullstack project 完整規格
-    ├── 05_first_month_goal.md         第一個月目標與週進度
-    ├── 06_second_month_goal.md        第二個月：能獨立做事
-    ├── 07_third_month_goal.md         第三個月：成為可靠戰力
-    ├── 08_code_style_guide.md         Go / React 風格指南
-    ├── 09_debugging_guide.md          Debug 方法與工具
-    ├── 10_evaluation_checklist.md     雙向評估清單
-    └── 11_ai_agent_workflow.md        AI agent 協作技巧
+docs/
+├── 01_backend_learning.md         Go 學習路徑
+├── 02_frontend_learning.md        React + 新 stack 學習路徑
+├── 03_git_and_engineering.md      Git、PR、Linux、Docker 基礎
+├── 04_pre_onboarding_project.md   入職前 fullstack project 完整規格
+├── 05_first_month_goal.md         第一個月目標與週進度
+├── 06_second_month_goal.md        第二個月：能獨立做事
+├── 07_third_month_goal.md         第三個月：成為可靠戰力
+├── 08_code_style_guide.md         Go / React 風格指南
+├── 09_debugging_guide.md          Debug 方法與工具
+├── 10_evaluation_checklist.md     雙向評估清單
+└── 11_ai_agent_workflow.md        AI agent 協作技巧
 ```
 
 ---
@@ -84,7 +72,7 @@ stranity-hire-roadmap/
 
 ### 入職前
 
-請依序閱讀：
+依序閱讀：
 
 1. [`docs/01_backend_learning.md`](docs/01_backend_learning.md)
 2. [`docs/02_frontend_learning.md`](docs/02_frontend_learning.md)
@@ -96,7 +84,7 @@ stranity-hire-roadmap/
 
 ### 入職後三個月
 
-請依序對齊：
+依序對齊：
 
 1. [`docs/05_first_month_goal.md`](docs/05_first_month_goal.md)
 2. [`docs/06_second_month_goal.md`](docs/06_second_month_goal.md)
@@ -145,21 +133,7 @@ stranity-hire-roadmap/
 
 ## Pre-onboarding Project
 
-入職前請完成一個小型 fullstack project：**Strategy Management System**
-
-完整規格見 [`docs/04_pre_onboarding_project.md`](docs/04_pre_onboarding_project.md)。
-
----
-
-## Mentor 使用方式
-
-Mentor 可以用這份 roadmap 來：
-
-- 安排新人第一週任務
-- 檢查 pre-onboarding project
-- 做 code review
-- 用 [`10_evaluation_checklist.md`](docs/10_evaluation_checklist.md) 每月評估
-- 設計下一階段成長目標
+入職前請完成一個小型 fullstack project。完整規格見 [`docs/04_pre_onboarding_project.md`](docs/04_pre_onboarding_project.md)。
 
 ---
 
@@ -167,7 +141,7 @@ Mentor 可以用這份 roadmap 來：
 
 三個月後，期待新人可以：
 
-- 理解 Stranity 的基本產品與工程架構（eltrade / gobe / paraninja / sikax）
+- 理解公司產品與工程架構
 - 獨立完成小型 fullstack feature
 - 能閱讀與修改現有 codebase
 - 能主動 debug 並提出解法

@@ -398,7 +398,7 @@ backend/
 
 ## 5.3 Frontend
 
-參考 `~/stranity/react-paraninja/src/` 結構：
+建議結構（按 domain 切 `features/`）：
 
 ```
 frontend/

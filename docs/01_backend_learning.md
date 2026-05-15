@@ -318,13 +318,7 @@ my-service/
 
 # 第八階段：閱讀 Stranity codebase（入職第一週）
 
-入職前不必做，但入職第一週請開：
-
-- `~/stranity/gobe2/` — 主後端服務
-- `~/stranity/eltrade-worker/` — Go worker service 範例
-- `~/stranity/sikaz/` — 另一個 Go service
-
-觀察：
+入職前不必做，但入職第一週 mentor 會帶你看公司 Go 主力 repo。請花時間觀察：
 
 - 他們怎麼分目錄
 - 他們怎麼寫 handler、service、repository

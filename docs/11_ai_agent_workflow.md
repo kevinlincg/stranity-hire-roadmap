@@ -28,7 +28,7 @@ Stranity 的全端工程師偏後端，前端會大量依賴 AI agent。但 **AI
 npm install -g @anthropic-ai/claude-code
 
 # 在專案根目錄啟動
-cd ~/stranity/some-repo
+cd your-repo
 claude
 ```
 
@@ -36,19 +36,14 @@ claude
 
 # Stranity 內的 AI 慣例
 
-每個主力 repo 多半有：
+公司主力 repo 多半都有：
 
 - `CLAUDE.md` — 給 Claude Code 的專案指南
 - `AGENTS.md` — 給所有 AI agent 的指南（OpenAI Codex CLI、Cursor 等）
 
-看看現役 repo：
-
-- `~/stranity/react-paraninja/CLAUDE.md`
-- `~/stranity/react-paraninja/AGENTS.md`
-- `~/stranity/gobe2/AGENTS.md`
-- `~/stranity/sikaz/CLAUDE.md`
-
 入職第一週請讀完你會碰到的 repo 的 `CLAUDE.md` / `AGENTS.md`。**這些文件已經告訴 AI 該注意什麼**，你就不必每次都重貼一遍。
+
+入職前可以先看公開的 [Anthropic CLAUDE.md 範例](https://docs.claude.com/en/docs/claude-code/memory) 與各家 OSS repo 的 `AGENTS.md` 認識這個格式。
 
 ---
 
