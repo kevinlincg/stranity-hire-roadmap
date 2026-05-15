@@ -70,21 +70,41 @@
 - **React**：18 以上
 - **Vite**：build tool
 - **TypeScript**：嚴格模式（`strict: true`）
-- **Ant Design**：5.x
-- API 串接套件自選：`@tanstack/react-query` + `axios` 是推薦組合
+- **Tailwind CSS**：樣式
+- **shadcn/ui (Radix UI)**：元件，建議用 `npx shadcn add` 加入需要的元件
+- **React Hook Form + Zod**：表單與驗證
+- **Redux Toolkit + RTK Query** 或 **axios + 自管 state**：擇一處理 API 與 state（RTK Query 加分）
 
 ### Infra
 
 - **Docker** + **Docker Compose**：一個 `docker compose up` 就要能跑全部
 
-## 3.2 不必使用（但會加分）
+## 3.2 不必使用
 
-- TanStack Query / SWR
-- Zustand（單頁 app 用 `useState` 也夠）
+- ❌ **Ant Design**：Stranity 新 repo 已不用 AntD。請用 Tailwind + shadcn/ui
+- ❌ **Material-UI / Chakra**：同上
+- ❌ **Zustand**：state 量少就 `useState`，跨頁面共用就用 Redux Toolkit
+
+## 3.3 不必使用（但會加分）
+
 - migration 工具（`golang-migrate`、`goose`、`atlas` 擇一）
 - ESLint + Prettier + golangci-lint
 - Makefile / Taskfile
-- unit test
+- unit test（Vitest + RTL on FE、`testing` + testify on BE）
+- MSW（前端 mock）
+- OpenAPI codegen（後端產 spec → 前端 `openapi-typescript` 產型別）
+
+## 3.4 關於 AI 協助
+
+**鼓勵全程使用 AI agent（Claude Code、Cursor、Copilot）。**
+
+但你要負責：
+
+- 看懂 AI 寫的每一行 — review 不出 bug 你被罵
+- 不能把整個 spec 丟給 AI 一鍵生成 — 你要做設計決策
+- AI 寫得不好就改，不要遷就
+
+更多技巧見 [`11_ai_agent_workflow.md`](11_ai_agent_workflow.md)。
 
 ---
 
@@ -244,33 +264,37 @@ GET /api/v1/strategies?page=1&page_size=20&keyword=AAPL&status=active&sort=-crea
 
 ### 頁面 1：Login
 
-- email + 密碼欄
-- 「登入」按鈕
+- email + 密碼欄（建議 RHF + Zod 驗證）
+- 「登入」按鈕（loading 中 disabled）
 - 錯誤訊息（密碼錯、帳號不存在）
 - 登入後跳到 strategy list
+- token 存哪：建議 `localStorage` + Redux slice，重整不掉登入
 
 ### 頁面 2：Strategy List
 
-- 上方：keyword 搜尋、status 篩選、「新增」按鈕
+- 上方：keyword 搜尋（debounce）、status 篩選、「新增」按鈕
 - 中間：Table（id、name、symbol、status、created_at、操作）
-- 下方：分頁器
-- 操作欄：編輯、刪除（刪除前要確認）
-- Table loading 狀態
-- 空資料狀態
+  - shadcn 沒有現成 `Table` component，可用 `<table>` + Tailwind 自刻，或用 `@tanstack/react-table`
+- 下方：分頁器（shadcn 有 `Pagination` 元件）
+- 操作欄：編輯、刪除（用 `AlertDialog` 確認）
+- Table loading 狀態（skeleton）
+- 空資料狀態（empty state component）
 
-### 頁面 3：Strategy 新增 / 編輯（Modal）
+### 頁面 3：Strategy 新增 / 編輯（Dialog）
 
-- 用 Modal 包 Form
-- 欄位：name、symbol、status（Select）、description（TextArea）
-- 驗證：required、長度
-- 成功後關閉 Modal、refresh list、show 成功 notification
-- 失敗 show error notification
+- 用 shadcn `Dialog` 包表單
+- 表單：RHF + Zod
+- 欄位：name（Input）、symbol（Input）、status（Select）、description（Textarea）
+- 驗證錯誤顯示在欄位下方
+- 成功後關閉 Dialog、refresh list、show 成功 toast（`sonner` 或 shadcn `toast`）
+- 失敗顯示錯誤 toast
 
 ### 頁面 4：Header / Layout
 
 - 顯示當前 user email
-- 登出按鈕
+- 登出按鈕（DropdownMenu）
 - 公司 logo 或 app 名稱
+- 至少有桌面版排版即可（手機 RWD 是加分）
 
 ---
 
@@ -374,31 +398,43 @@ backend/
 
 ## 5.3 Frontend
 
+參考 `~/stranity/react-paraninja/src/` 結構：
+
 ```
 frontend/
 ├── src/
 │   ├── main.tsx
 │   ├── App.tsx
-│   ├── api/
-│   │   ├── client.ts            # axios instance
-│   │   ├── auth.ts
-│   │   └── strategy.ts
-│   ├── pages/
-│   │   ├── Login.tsx
-│   │   └── StrategyList.tsx
+│   ├── app/                     # app shell（Header、Sidebar、ProtectedRoute）
+│   │   ├── layouts/
+│   │   └── components/
 │   ├── components/
-│   │   ├── Layout.tsx
-│   │   └── StrategyFormModal.tsx
-│   ├── hooks/
-│   │   └── useAuth.ts
-│   ├── store/                   # 若用 zustand
-│   │   └── authStore.ts
+│   │   └── ui/                  # shadcn 元件（button.tsx、input.tsx、dialog.tsx...）
+│   ├── features/                # 按 domain 分
+│   │   ├── auth/
+│   │   │   ├── LoginPage.tsx
+│   │   │   └── authSlice.ts
+│   │   └── strategy/
+│   │       ├── StrategyListPage.tsx
+│   │       ├── StrategyFormDialog.tsx
+│   │       └── strategyApi.ts   # RTK Query endpoints
+│   ├── lib/
+│   │   ├── schemas/             # Zod schema 集中地
+│   │   └── utils.ts             # cn() 之類 helper
+│   ├── store/
+│   │   ├── index.ts             # configureStore
+│   │   └── hooks.ts             # useAppDispatch / useAppSelector
 │   ├── types/
 │   │   └── strategy.ts
-│   └── utils/
+│   ├── styles/
+│   │   └── globals.css          # Tailwind base
+│   └── vite-env.d.ts
 ├── public/
 ├── index.html
 ├── vite.config.ts
+├── tailwind.config.ts
+├── postcss.config.js
+├── components.json              # shadcn 設定
 ├── tsconfig.json
 ├── package.json
 └── Dockerfile
@@ -570,6 +606,15 @@ A: 是。`deleted_at` 欄位是規格的一部分。
 
 **Q: 前端可以用 Next.js 嗎？**
 A: 不行，請用純 React + Vite。Stranity 內部用 SPA + 獨立 backend。
+
+**Q: 我可以用 Ant Design 嗎？**
+A: 不行（除非你要展示「我能在舊 repo 工作」）。Stranity 新 repo 已全面改用 Tailwind + shadcn/ui。
+
+**Q: 我前端不熟，可以 AI 全程協助嗎？**
+A: 可以。但你要：（1）看懂每一行 code、（2）做設計決策、（3）能解釋為什麼這樣寫。AI 寫的不能解釋等於沒寫。
+
+**Q: shadcn/ui 沒有 Table 元件，怎麼辦？**
+A: 用 `<table>` + Tailwind class 自刻，或裝 `@tanstack/react-table` 接 shadcn 樣式。新功能也能用 `npx shadcn add data-table`。
 
 **Q: 可以用 SQLite 嗎？**
 A: 不可以。請用 Postgres。SQLite 跟 Postgres 行為差異很大（型別、index、index 排序、JSON）。
